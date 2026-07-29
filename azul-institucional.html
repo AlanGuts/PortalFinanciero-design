@@ -1,0 +1,358 @@
+<title>Azul institucional — modo noche y vista de escritorio</title>
+<style>
+  :root {
+    --page-bg: #faf9f7; --page-surface: #ffffff; --page-border: #e6e3dd;
+    --page-text: #1c1b19; --page-muted: #6b6862; --page-accent: #5b6472;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --page-bg:#131315; --page-surface:#1a1a1d; --page-border:#2b2b2e; --page-text:#ececea; --page-muted:#9a978f; --page-accent:#9aa4b2; }
+  }
+  :root[data-theme="dark"] { --page-bg:#131315; --page-surface:#1a1a1d; --page-border:#2b2b2e; --page-text:#ececea; --page-muted:#9a978f; --page-accent:#9aa4b2; }
+  :root[data-theme="light"] { --page-bg:#faf9f7; --page-surface:#ffffff; --page-border:#e6e3dd; --page-text:#1c1b19; --page-muted:#6b6862; --page-accent:#5b6472; }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin:0; background:var(--page-bg); color:var(--page-text); font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.5; }
+  .wrap { max-width: 840px; margin: 0 auto; padding: 2.25rem 1.25rem 4rem; }
+
+  .intro .tag { display:inline-block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.14em; color:var(--page-accent); margin-bottom:0.7rem; }
+  .intro h1 { font-size: clamp(1.5rem, 4vw, 2.05rem); margin: 0 0 0.6rem; letter-spacing: -0.01em; text-wrap: balance; }
+  .intro p { color: var(--page-muted); max-width: 66ch; margin: 0 0 0.5rem; font-size: 0.95rem; }
+  .back { display:inline-block; margin-top:0.4rem; font-size:0.82rem; color:var(--page-accent); text-decoration:none; border-bottom:1px solid currentColor; }
+
+  nav.jump { position:sticky; top:0; z-index:5; display:flex; gap:0.4rem; flex-wrap:wrap; padding:0.75rem 0; margin:1.4rem 0 2.2rem; background:var(--page-bg); border-bottom:1px solid var(--page-border); }
+  nav.jump a { font-size:0.78rem; text-decoration:none; color:var(--page-muted); border:1px solid var(--page-border); padding:0.4rem 0.75rem; border-radius:999px; transition:color .15s ease, border-color .15s ease; }
+  nav.jump a:hover, nav.jump a:focus-visible { color:var(--page-text); border-color:var(--page-accent); }
+
+  section.direction { padding:1.5rem 0 3.2rem; scroll-margin-top:4.5rem; }
+  section.direction + section.direction { border-top:1px solid var(--page-border); }
+  .dir-head { margin-bottom:1.1rem; }
+  .dir-head .eyebrow { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--page-muted); margin:0 0 0.3rem; }
+  .dir-head h2 { margin:0 0 0.3rem; font-size:1.35rem; letter-spacing:-0.01em; }
+  .dir-head p { margin:0; color:var(--page-muted); font-size:0.92rem; max-width:62ch; }
+
+  .row3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; }
+  @media (max-width: 720px) { .row3 { grid-template-columns:1fr; } }
+  .card-block h3 { font-size:0.95rem; margin:0 0 0.25rem; }
+  .card-block .sub { font-size:0.8rem; color:var(--page-muted); margin:0 0 0.7rem; min-height:2.6em; }
+
+  .legend { display:flex; flex-wrap:wrap; gap:0.9rem 1.4rem; margin:0 0 0.9rem; padding:0.75rem 0.85rem; border:1px solid var(--page-border); border-radius:10px; background:var(--page-surface); font-size:0.8rem; }
+  .swatches { display:flex; flex-wrap:wrap; gap:0.5rem; }
+  .swatch { text-align:center; width:2.6rem; }
+  .swatch .chip { width:1.7rem; height:1.7rem; border-radius:5px; margin:0 auto 0.25rem; border:1px solid rgba(0,0,0,0.12); }
+  .swatch span { display:block; font-size:0.55rem; color:var(--page-muted); font-family:ui-monospace,monospace; }
+
+  /* ---- phone frame ---- */
+  .phone-shell { display:flex; justify-content:center; }
+  .phone { width:100%; max-width:280px; border-radius:24px; padding:9px; background:#0d0d0f; box-shadow:0 14px 30px -16px rgba(0,0,0,0.45); }
+  .phone .screen { border-radius:16px; overflow:hidden; background:var(--bg); color:var(--text); font-family:var(--font-body); }
+  .phone .notch { height:18px; display:flex; align-items:flex-end; justify-content:center; background:var(--bg); }
+  .phone .notch::before { content:""; width:70px; height:13px; background:#0d0d0f; border-radius:0 0 10px 10px; }
+
+  .app-header { display:flex; align-items:center; justify-content:space-between; padding:0.7rem 0.8rem 0.55rem; border-bottom:1px solid var(--border); }
+  .app-brand { font-family:var(--font-display); font-weight:800; font-size:0.68rem; letter-spacing:-0.01em; }
+  .app-tabs { display:flex; gap:0.4rem; font-size:0.52rem; }
+  .app-tabs span { color:var(--text-muted); }
+  .app-tabs .active { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:2px; }
+  .burger { width:15px; height:10px; position:relative; }
+  .burger i { position:absolute; left:0; right:0; height:2px; background:var(--text-muted); border-radius:2px; }
+  .burger i:nth-child(1){top:0;} .burger i:nth-child(2){top:4px;} .burger i:nth-child(3){top:8px;}
+
+  .app-body { padding:0.75rem 0.8rem 1rem; }
+  .kpis { display:grid; grid-template-columns:1fr 1fr; gap:0.4rem; margin-bottom:0.7rem; }
+  .kpi { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.5rem 0.55rem; }
+  .kpi.util, .kpi.debt { border-top:3px solid var(--accent); }
+  .kpi.util { border-top-color: var(--success); }
+  .kpi .l { font-size:0.5rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.2rem; }
+  .kpi .v { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:0.82rem; font-weight:700; }
+  .kpi.primary .v { color:var(--accent); }
+
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.6rem 0.65rem; margin-bottom:0.7rem; }
+  .panel .ph { font-size:0.55rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:0.45rem; }
+  .bar-row { display:flex; align-items:center; gap:0.4rem; margin-bottom:0.35rem; font-size:0.5rem; }
+  .bar-row:last-child { margin-bottom:0; }
+  .bar-row .bl { width:70px; flex-shrink:0; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bar-track { flex:1; height:5px; border-radius:999px; background:var(--surface-raised); overflow:hidden; }
+  .bar-fill { height:100%; border-radius:999px; background:var(--accent); }
+  .bar-row .bp { font-family:var(--font-mono); color:var(--text-muted); flex-shrink:0; width:22px; text-align:right; }
+
+  table.mocktable { width:100%; border-collapse:collapse; font-size:0.56rem; }
+  table.mocktable th { text-align:left; font-size:0.48rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); font-weight:600; padding-bottom:0.3rem; }
+  table.mocktable td { padding:0.32rem 0; border-top:1px solid var(--border); vertical-align:middle; }
+  table.mocktable td.amt { font-family:var(--font-mono); font-variant-numeric:tabular-nums; text-align:right; }
+  .item-name { font-weight:600; }
+  .item-sub { color:var(--text-muted); font-size:0.48rem; }
+  .pill { display:inline-flex; align-items:center; font-size:0.46rem; padding:0.12rem 0.4rem; border-radius:999px; text-transform:uppercase; letter-spacing:0.03em; font-weight:600; }
+  .pill.ok { background:color-mix(in srgb, var(--success) 18%, transparent); color:var(--success); }
+  .pill.pending { background:color-mix(in srgb, var(--danger) 16%, transparent); color:var(--danger); }
+
+  /* ---- desktop frame ---- */
+  .desktop-shell { border:1px solid var(--page-border); border-radius:12px; overflow:hidden; box-shadow:0 14px 34px -20px rgba(0,0,0,0.35); }
+  .desktop { background:var(--bg); color:var(--text); font-family:var(--font-body); }
+  .d-header { display:flex; align-items:center; gap:1.4rem; padding:0.75rem 1.2rem; border-bottom:1px solid var(--border); }
+  .d-brand { font-family:var(--font-display); font-weight:800; font-size:0.85rem; letter-spacing:-0.01em; flex-shrink:0; }
+  .d-nav { display:flex; gap:1.1rem; font-size:0.72rem; flex:1; }
+  .d-nav span { color:var(--text-muted); padding-bottom:0.4rem; }
+  .d-nav .active { color:var(--accent); border-bottom:2px solid var(--accent); }
+  .d-user { display:flex; align-items:center; gap:0.8rem; font-size:0.68rem; color:var(--text-muted); flex-shrink:0; }
+  .d-user .avatar { width:22px; height:22px; border-radius:999px; background:var(--surface-raised); border:1px solid var(--border); }
+
+  .d-body { padding:1.1rem 1.2rem 1.3rem; }
+  .d-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:0.65rem; margin-bottom:0.9rem; }
+  .d-kpis .kpi { padding:0.7rem 0.75rem; }
+  .d-kpis .kpi .l { font-size:0.62rem; }
+  .d-kpis .kpi .v { font-size:1rem; }
+
+  .d-columns { display:grid; grid-template-columns:1.6fr 1fr; gap:0.9rem; align-items:start; }
+  @media (max-width: 640px) { .d-columns { grid-template-columns:1fr; } }
+  .d-columns .panel .bar-row .bl { width:110px; }
+  .d-table th, .d-table td { font-size:0.68rem; }
+  .d-table td { padding:0.5rem 0.3rem; }
+  .d-table th { padding-bottom:0.45rem; }
+
+  footer { margin-top:2rem; padding-top:1.4rem; border-top:1px solid var(--page-border); color:var(--page-muted); font-size:0.85rem; max-width:62ch; }
+
+  /* ================= tokens: Azul institucional — modo día ================= */
+  [data-t="dia"] {
+    --bg:#f2f4f7; --surface:#ffffff; --surface-raised:#eaeef3; --border:#dbe2ea;
+    --text:#16212e; --text-muted:#5c6b7a; --accent:#2350c9; --accent-hover:#1c40a3;
+    --success:#0f8a5f; --danger:#c8371f;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+  }
+  /* ================= tokens: modo noche, opción 1 — Carbón neutro ================= */
+  [data-t="noche1"] {
+    --bg:#12151b; --surface:#181c24; --surface-raised:#1f242e; --border:#2a303c;
+    --text:#e7ebf1; --text-muted:#8e97a6; --accent:#5b8def; --accent-hover:#7ea3f2;
+    --success:#34d399; --danger:#f87171;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+  }
+  /* ================= tokens: modo noche, opción 2 — Azul profundo ================= */
+  [data-t="noche2"] {
+    --bg:#0d1526; --surface:#121d34; --surface-raised:#17253f; --border:#233451;
+    --text:#e7edf9; --text-muted:#8fa0bd; --accent:#6ea8ff; --accent-hover:#8fbcff;
+    --success:#3ddc97; --danger:#ff8574;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+  }
+  /* ================= tokens: modo noche, opción 3 — Alto contraste ================= */
+  [data-t="noche3"] {
+    --bg:#0a0a0c; --surface:#131315; --surface-raised:#1b1b1e; --border:#2e2e33;
+    --text:#f5f5f7; --text-muted:#9a9aa1; --accent:#4d8bff; --accent-hover:#6fa0ff;
+    --success:#2fd48a; --danger:#ff6b6b;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+  }
+</style>
+
+<div class="wrap">
+  <div class="intro">
+    <p class="tag">Portal Financiero · Azul institucional</p>
+    <h1>Modo noche + vista de escritorio</h1>
+    <p>Elegiste Azul institucional. Acá tres formas de resolver el modo noche, y cómo se ve la misma pantalla ya no en el celular sino en una PC — con la nav completa (Historial, Pagar mes, Último mes, Tarjetas, Deuda proyectada) y dos columnas.</p>
+    <a class="back" href="index.html">← Volver a las 3 direcciones</a>
+  </div>
+
+  <nav class="jump">
+    <a href="#noche">Modo noche — 3 opciones</a>
+    <a href="#escritorio">Vista de escritorio</a>
+  </nav>
+
+  <!-- ============ NOCHE: 3 OPCIONES ============ -->
+  <section id="noche" class="direction">
+    <div class="dir-head">
+      <p class="eyebrow">Modo noche</p>
+      <h2>Tres formas de resolverlo</h2>
+      <p>Mismo azul institucional de acento, pero el fondo oscuro cambia de carácter en cada una.</p>
+    </div>
+
+    <div class="row3">
+      <div class="card-block">
+        <h3>1 · Carbón neutro</h3>
+        <p class="sub">Gris oscuro neutro, el estándar más seguro y probado — el mismo criterio que ya usa el modo noche actual del portal.</p>
+        <div class="legend"><div class="swatches">
+          <div class="swatch"><div class="chip" style="background:#12151b"></div><span>bg</span></div>
+          <div class="swatch"><div class="chip" style="background:#181c24"></div><span>surf</span></div>
+          <div class="swatch"><div class="chip" style="background:#5b8def"></div><span>acc</span></div>
+        </div></div>
+        <div class="phone-shell"><div class="phone" data-t="noche1"><div class="screen">
+          <div class="notch"></div>
+          <div class="app-header"><span class="app-brand">Portal Financiero</span><div class="app-tabs"><span class="active">Historial</span><span>Pagar</span></div><div class="burger"><i></i><i></i><i></i></div></div>
+          <div class="app-body">
+            <div class="kpis">
+              <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+              <div class="kpi debt"><div class="l">Deuda 12m</div><div class="v">$3,1 M</div></div>
+              <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+              <div class="kpi util"><div class="l">Próx. venc.</div><div class="v">5 días</div></div>
+            </div>
+            <div class="panel"><div class="ph">Avance por línea</div>
+              <div class="bar-row"><span class="bl">Hip. BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+              <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+            </div>
+            <table class="mocktable"><thead><tr><th>Ítem</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+              <tr><td><span class="item-name">Gastos comunes</span><br><span class="item-sub">15 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+              <tr><td><span class="item-name">Itaú · Tarjeta</span><br><span class="item-sub">25 jul</span></td><td><span class="pill pending">Pend.</span></td><td class="amt">$58.700</td></tr>
+            </tbody></table>
+          </div>
+        </div></div></div>
+      </div>
+
+      <div class="card-block">
+        <h3>2 · Azul profundo</h3>
+        <p class="sub">El fondo mismo tiene un tinte azul marino en vez de gris neutro — más envolvente, más "de noche" de verdad, menos genérico.</p>
+        <div class="legend"><div class="swatches">
+          <div class="swatch"><div class="chip" style="background:#0d1526"></div><span>bg</span></div>
+          <div class="swatch"><div class="chip" style="background:#121d34"></div><span>surf</span></div>
+          <div class="swatch"><div class="chip" style="background:#6ea8ff"></div><span>acc</span></div>
+        </div></div>
+        <div class="phone-shell"><div class="phone" data-t="noche2"><div class="screen">
+          <div class="notch"></div>
+          <div class="app-header"><span class="app-brand">Portal Financiero</span><div class="app-tabs"><span class="active">Historial</span><span>Pagar</span></div><div class="burger"><i></i><i></i><i></i></div></div>
+          <div class="app-body">
+            <div class="kpis">
+              <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+              <div class="kpi debt"><div class="l">Deuda 12m</div><div class="v">$3,1 M</div></div>
+              <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+              <div class="kpi util"><div class="l">Próx. venc.</div><div class="v">5 días</div></div>
+            </div>
+            <div class="panel"><div class="ph">Avance por línea</div>
+              <div class="bar-row"><span class="bl">Hip. BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+              <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+            </div>
+            <table class="mocktable"><thead><tr><th>Ítem</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+              <tr><td><span class="item-name">Gastos comunes</span><br><span class="item-sub">15 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+              <tr><td><span class="item-name">Itaú · Tarjeta</span><br><span class="item-sub">25 jul</span></td><td><span class="pill pending">Pend.</span></td><td class="amt">$58.700</td></tr>
+            </tbody></table>
+          </div>
+        </div></div></div>
+      </div>
+
+      <div class="card-block">
+        <h3>3 · Alto contraste</h3>
+        <p class="sub">Casi negro puro, bordes bien marcados. El más nítido y el que menos batería consume en pantallas OLED — más utilitario, menos atmosférico.</p>
+        <div class="legend"><div class="swatches">
+          <div class="swatch"><div class="chip" style="background:#0a0a0c"></div><span>bg</span></div>
+          <div class="swatch"><div class="chip" style="background:#131315"></div><span>surf</span></div>
+          <div class="swatch"><div class="chip" style="background:#4d8bff"></div><span>acc</span></div>
+        </div></div>
+        <div class="phone-shell"><div class="phone" data-t="noche3"><div class="screen">
+          <div class="notch"></div>
+          <div class="app-header"><span class="app-brand">Portal Financiero</span><div class="app-tabs"><span class="active">Historial</span><span>Pagar</span></div><div class="burger"><i></i><i></i><i></i></div></div>
+          <div class="app-body">
+            <div class="kpis">
+              <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+              <div class="kpi debt"><div class="l">Deuda 12m</div><div class="v">$3,1 M</div></div>
+              <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+              <div class="kpi util"><div class="l">Próx. venc.</div><div class="v">5 días</div></div>
+            </div>
+            <div class="panel"><div class="ph">Avance por línea</div>
+              <div class="bar-row"><span class="bl">Hip. BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+              <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+            </div>
+            <table class="mocktable"><thead><tr><th>Ítem</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+              <tr><td><span class="item-name">Gastos comunes</span><br><span class="item-sub">15 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+              <tr><td><span class="item-name">Itaú · Tarjeta</span><br><span class="item-sub">25 jul</span></td><td><span class="pill pending">Pend.</span></td><td class="amt">$58.700</td></tr>
+            </tbody></table>
+          </div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ESCRITORIO ============ -->
+  <section id="escritorio" class="direction">
+    <div class="dir-head">
+      <p class="eyebrow">Vista de escritorio</p>
+      <h2>Historial en PC</h2>
+      <p>La nav completa entra en una sola fila, y el contenido se reparte en columnas en vez de apilarse. Día y la opción de noche "Carbón neutro" (la misma lógica aplica a las otras dos).</p>
+    </div>
+
+    <p style="font-size:0.85rem; color:var(--page-muted); margin:0 0 0.5rem;">Día</p>
+    <div class="desktop-shell" style="margin-bottom:1.6rem;">
+      <div class="desktop" data-t="dia">
+        <div class="d-header">
+          <span class="d-brand">PORTAL FINANCIERO</span>
+          <div class="d-nav">
+            <span class="active">Historial</span>
+            <span>Pagar mes</span>
+            <span>Último mes</span>
+            <span>Tarjetas</span>
+            <span>Deuda proyectada</span>
+          </div>
+          <div class="d-user"><span>Alan</span><span class="avatar"></span></div>
+        </div>
+        <div class="d-body">
+          <div class="d-kpis">
+            <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+            <div class="kpi debt"><div class="l">Deuda proy. 12m</div><div class="v">$3.100.000</div></div>
+            <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+            <div class="kpi util"><div class="l">Próximo vencimiento</div><div class="v">5 días</div></div>
+          </div>
+          <div class="d-columns">
+            <table class="mocktable d-table"><thead><tr><th>Ítem</th><th>Fecha</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+              <tr><td><span class="item-name">Gastos comunes</span><br><span class="item-sub">Depto 206</span></td><td>15 jul</td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+              <tr><td><span class="item-name">Luz · Enel</span></td><td>18 jul</td><td><span class="pill ok">Pagado</span></td><td class="amt">$38.200</td></tr>
+              <tr><td><span class="item-name">Agua · Aguas Andinas</span></td><td>20 jul</td><td><span class="pill pending">Pendiente</span></td><td class="amt">$22.900</td></tr>
+              <tr><td><span class="item-name">Gas · Metrogas</span></td><td>22 jul</td><td><span class="pill pending">Pendiente</span></td><td class="amt">$19.400</td></tr>
+              <tr><td><span class="item-name">Itaú · Tarjeta</span></td><td>25 jul</td><td><span class="pill pending">Pendiente</span></td><td class="amt">$58.700</td></tr>
+            </tbody></table>
+            <div class="panel">
+              <div class="ph">Avance por línea</div>
+              <div class="bar-row"><span class="bl">Hipotecario BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+              <div class="bar-row"><span class="bl">Consumo Itaú</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bp">40%</span></div>
+              <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.85rem; color:var(--page-muted); margin:0 0 0.5rem;">Noche — Carbón neutro</p>
+    <div class="desktop-shell">
+      <div class="desktop" data-t="noche1">
+        <div class="d-header">
+          <span class="d-brand">PORTAL FINANCIERO</span>
+          <div class="d-nav">
+            <span class="active">Historial</span>
+            <span>Pagar mes</span>
+            <span>Último mes</span>
+            <span>Tarjetas</span>
+            <span>Deuda proyectada</span>
+          </div>
+          <div class="d-user"><span>Alan</span><span class="avatar"></span></div>
+        </div>
+        <div class="d-body">
+          <div class="d-kpis">
+            <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+            <div class="kpi debt"><div class="l">Deuda proy. 12m</div><div class="v">$3.100.000</div></div>
+            <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+            <div class="kpi util"><div class="l">Próximo vencimiento</div><div class="v">5 días</div></div>
+          </div>
+          <div class="d-columns">
+            <table class="mocktable d-table"><thead><tr><th>Ítem</th><th>Fecha</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+              <tr><td><span class="item-name">Gastos comunes</span><br><span class="item-sub">Depto 206</span></td><td>15 jul</td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+              <tr><td><span class="item-name">Luz · Enel</span></td><td>18 jul</td><td><span class="pill ok">Pagado</span></td><td class="amt">$38.200</td></tr>
+              <tr><td><span class="item-name">Agua · Aguas Andinas</span></td><td>20 jul</td><td><span class="pill pending">Pendiente</span></td><td class="amt">$22.900</td></tr>
+              <tr><td><span class="item-name">Gas · Metrogas</span></td><td>22 jul</td><td><span class="pill pending">Pendiente</span></td><td class="amt">$19.400</td></tr>
+              <tr><td><span class="item-name">Itaú · Tarjeta</span></td><td>25 jul</td><td><span class="pill pending">Pendiente</span></td><td class="amt">$58.700</td></tr>
+            </tbody></table>
+            <div class="panel">
+              <div class="ph">Avance por línea</div>
+              <div class="bar-row"><span class="bl">Hipotecario BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+              <div class="bar-row"><span class="bl">Consumo Itaú</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bp">40%</span></div>
+              <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>¿Cuál de las 3 noches te gusta más? Con esa y el escritorio ya tenemos cerrado el sistema completo de Azul institucional para llevarlo al código real.</footer>
+</div>
