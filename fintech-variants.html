@@ -1,0 +1,284 @@
+<title>Fintech claro — 3 variantes</title>
+<style>
+  :root {
+    --page-bg: #faf9f7; --page-surface: #ffffff; --page-border: #e6e3dd;
+    --page-text: #1c1b19; --page-muted: #6b6862; --page-accent: #5b6472;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --page-bg:#131315; --page-surface:#1a1a1d; --page-border:#2b2b2e; --page-text:#ececea; --page-muted:#9a978f; --page-accent:#9aa4b2; }
+  }
+  :root[data-theme="dark"] { --page-bg:#131315; --page-surface:#1a1a1d; --page-border:#2b2b2e; --page-text:#ececea; --page-muted:#9a978f; --page-accent:#9aa4b2; }
+  :root[data-theme="light"] { --page-bg:#faf9f7; --page-surface:#ffffff; --page-border:#e6e3dd; --page-text:#1c1b19; --page-muted:#6b6862; --page-accent:#5b6472; }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body { margin:0; background:var(--page-bg); color:var(--page-text); font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.5; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 2.25rem 1.25rem 4rem; }
+
+  .intro .tag { display:inline-block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.14em; color:var(--page-accent); margin-bottom:0.7rem; }
+  .intro h1 { font-size: clamp(1.5rem, 4vw, 2.05rem); margin: 0 0 0.6rem; letter-spacing: -0.01em; text-wrap: balance; }
+  .intro p { color: var(--page-muted); max-width: 62ch; margin: 0 0 0.5rem; font-size: 0.95rem; }
+  .back { display:inline-block; margin-top:0.4rem; font-size:0.82rem; color:var(--page-accent); text-decoration:none; border-bottom:1px solid currentColor; }
+
+  nav.jump { position:sticky; top:0; z-index:5; display:flex; gap:0.4rem; flex-wrap:wrap; padding:0.75rem 0; margin:1.4rem 0 2.2rem; background:var(--page-bg); border-bottom:1px solid var(--page-border); }
+  nav.jump a { font-size:0.78rem; text-decoration:none; color:var(--page-muted); border:1px solid var(--page-border); padding:0.4rem 0.75rem; border-radius:999px; transition:color .15s ease, border-color .15s ease; }
+  nav.jump a:hover, nav.jump a:focus-visible { color:var(--page-text); border-color:var(--page-accent); }
+
+  section.direction { padding:1.5rem 0 3.2rem; scroll-margin-top:4.5rem; }
+  section.direction + section.direction { border-top:1px solid var(--page-border); }
+  .dir-head { margin-bottom:1.1rem; }
+  .dir-head .eyebrow { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--page-muted); margin:0 0 0.3rem; }
+  .dir-head h2 { margin:0 0 0.3rem; font-size:1.35rem; letter-spacing:-0.01em; }
+  .dir-head p { margin:0; color:var(--page-muted); font-size:0.92rem; max-width:58ch; }
+
+  .legend { display:flex; flex-wrap:wrap; gap:1.6rem; margin:1.1rem 0 1.6rem; padding:1rem 1.1rem; border:1px solid var(--page-border); border-radius:10px; background:var(--page-surface); }
+  .swatches { display:flex; flex-wrap:wrap; gap:0.55rem; align-self:center; }
+  .swatch { text-align:center; width:3.4rem; }
+  .swatch .chip { width:2.1rem; height:2.1rem; border-radius:6px; margin:0 auto 0.3rem; border:1px solid rgba(0,0,0,0.08); }
+  .swatch span { display:block; font-size:0.6rem; color:var(--page-muted); font-family:ui-monospace,"SF Mono",monospace; }
+  .specimen { display:flex; flex-direction:column; gap:0.35rem; justify-content:center; }
+  .specimen .line { font-size:1.15rem; }
+  .specimen .label { font-size:0.65rem; color:var(--page-muted); text-transform:uppercase; letter-spacing:0.08em; }
+
+  .phone-shell { display:flex; justify-content:center; }
+  .phone { width:100%; max-width:372px; border-radius:30px; padding:12px; background:#0d0d0f; box-shadow:0 18px 40px -18px rgba(0,0,0,0.45); }
+  .phone .screen { border-radius:20px; overflow:hidden; background:var(--bg); color:var(--text); font-family:var(--font-body); }
+  .phone .notch { height:22px; display:flex; align-items:flex-end; justify-content:center; background:var(--bg); }
+  .phone .notch::before { content:""; width:90px; height:16px; background:#0d0d0f; border-radius:0 0 12px 12px; }
+
+  .app-header { display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1rem 0.7rem; border-bottom:1px solid var(--border); }
+  .app-brand { font-family:var(--font-display); font-weight:var(--display-weight,800); font-size:0.82rem; letter-spacing:var(--display-tracking,-0.01em); }
+  .app-tabs { display:flex; gap:0.55rem; font-size:0.62rem; }
+  .app-tabs span { color:var(--text-muted); }
+  .app-tabs .active { color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:2px; }
+  .burger { width:18px; height:12px; position:relative; }
+  .burger i { position:absolute; left:0; right:0; height:2px; background:var(--text-muted); border-radius:2px; }
+  .burger i:nth-child(1){top:0;} .burger i:nth-child(2){top:5px;} .burger i:nth-child(3){top:10px;}
+
+  .app-body { padding:0.95rem 1rem 1.2rem; }
+  .kpis { display:grid; grid-template-columns:1fr 1fr; gap:0.55rem; margin-bottom:0.9rem; }
+  .kpi { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius,10px); padding:var(--kpi-pad, 0.65rem 0.7rem); position:relative; overflow:hidden; }
+  .kpi .l { font-size:0.62rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.25rem; }
+  .kpi .v { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:1.02rem; font-weight:700; }
+  .kpi.primary .v { color:var(--accent); }
+
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius,10px); padding:0.75rem 0.8rem; margin-bottom:0.9rem; }
+  .panel .ph { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:0.55rem; }
+  .bar-row { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.45rem; font-size:0.62rem; }
+  .bar-row:last-child { margin-bottom:0; }
+  .bar-row .bl { width:92px; flex-shrink:0; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bar-track { flex:1; height:6px; border-radius:999px; background:var(--surface-raised); overflow:hidden; }
+  .bar-fill { height:100%; border-radius:999px; background:var(--accent); }
+  .bar-row .bp { font-family:var(--font-mono); color:var(--text-muted); flex-shrink:0; width:26px; text-align:right; }
+
+  table.mocktable { width:100%; border-collapse:collapse; font-size:0.68rem; }
+  table.mocktable th { text-align:left; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); font-weight:600; padding-bottom:0.4rem; }
+  table.mocktable td { padding:var(--row-pad, 0.42rem 0); border-top:1px solid var(--border); vertical-align:middle; }
+  table.mocktable td.amt { font-family:var(--font-mono); font-variant-numeric:tabular-nums; text-align:right; }
+  .item-name { font-weight:600; }
+  .item-sub { color:var(--text-muted); font-size:0.6rem; }
+
+  .pill { display:inline-flex; align-items:center; font-size:0.58rem; padding:0.15rem 0.5rem; border-radius:var(--pill-radius,999px); text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
+  .pill.ok { background:color-mix(in srgb, var(--success) 16%, transparent); color:var(--success); }
+  .pill.pending { background:color-mix(in srgb, var(--danger) 14%, transparent); color:var(--danger); }
+
+  footer { margin-top:2rem; padding-top:1.4rem; border-top:1px solid var(--page-border); color:var(--page-muted); font-size:0.85rem; max-width:58ch; }
+
+  /* ================= Variant 1: Azul institucional ================= */
+  [data-variant="azul"] {
+    --bg:#f2f4f7; --surface:#ffffff; --surface-raised:#eaeef3; --border:#dbe2ea;
+    --text:#16212e; --text-muted:#5c6b7a; --accent:#2350c9; --accent-hover:#1c40a3;
+    --success:#0f8a5f; --danger:#c8371f;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+    --radius:12px; --display-weight:800; --display-tracking:-0.01em;
+  }
+  [data-variant="azul"] .kpi { border-top:3px solid var(--accent); }
+  [data-variant="azul"] .kpi.util { border-top-color:#0f8a5f; }
+  [data-variant="azul"] td.cat { position:relative; }
+
+  /* ================= Variant 2: Índigo denso ================= */
+  [data-variant="indigo"] {
+    --bg:#eef0f5; --surface:#ffffff; --surface-raised:#e4e7f0; --border:#cfd4e4;
+    --text:#141830; --text-muted:#585f78; --accent:#4338ca; --accent-hover:#372ea8;
+    --success:#0f8a5f; --danger:#be123c;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+    --radius:6px; --display-weight:800; --display-tracking:-0.02em;
+    --kpi-pad: 0.55rem 0.6rem; --row-pad: 0.32rem 0;
+  }
+  [data-variant="indigo"] .app-brand,
+  [data-variant="indigo"] .kpi .l,
+  [data-variant="indigo"] .panel .ph {
+    font-family: var(--font-mono); text-transform: uppercase;
+  }
+  [data-variant="indigo"] .kpi .v { font-size: 0.94rem; }
+  [data-variant="indigo"] td.cat { border-left: 3px solid var(--accent); padding-left: 0.6rem; }
+  [data-variant="indigo"] tr:nth-child(2) td.cat { border-left-color: #0f8a5f; }
+  [data-variant="indigo"] tr:nth-child(3) td.cat { border-left-color: #0f8a5f; }
+  [data-variant="indigo"] .pill { border-radius: 3px; }
+
+  /* ================= Variant 3: Verde suave ================= */
+  [data-variant="verde"] {
+    --bg:#f3f7f5; --surface:#ffffff; --surface-raised:#e8f2ee; --border:#d7e6df;
+    --text:#132621; --text-muted:#5a7069; --accent:#0d9488; --accent-hover:#0b7d73;
+    --success:#0d9488; --danger:#d9534f;
+    --font-display:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+    --radius:18px; --display-weight:700; --display-tracking:0;
+    --kpi-pad: 0.75rem 0.8rem; --row-pad: 0.5rem 0;
+  }
+  [data-variant="verde"] .kpi { border:none; box-shadow: 0 1px 2px rgba(19,38,33,0.06); }
+  [data-variant="verde"] .kpi.primary { background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+  [data-variant="verde"] .kpi.util { background: color-mix(in srgb, var(--success) 8%, var(--surface)); }
+  [data-variant="verde"] .panel { box-shadow: 0 1px 2px rgba(19,38,33,0.06); border-color: transparent; }
+  [data-variant="verde"] .bar-fill { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #7dd3c0)); }
+</style>
+
+<div class="wrap">
+  <div class="intro">
+    <p class="tag">Portal Financiero · fintech claro</p>
+    <h1>Fintech claro — 3 variantes</h1>
+    <p>Misma base (gris azulado claro, acento institucional, semántico aparte), tres personalidades distintas: una más corporativa, una más densa/terminal, una más suave y amigable.</p>
+    <a class="back" href="index.html">← Volver a las 3 direcciones originales</a>
+  </div>
+
+  <nav class="jump">
+    <a href="#azul">1 · Azul institucional</a>
+    <a href="#indigo">2 · Índigo denso</a>
+    <a href="#verde">3 · Verde suave</a>
+  </nav>
+
+  <!-- VARIANT 1 -->
+  <section id="azul" class="direction">
+    <div class="dir-head">
+      <p class="eyebrow">Variante 1</p>
+      <h2>Azul institucional</h2>
+      <p>La que ya viste, pulida: azul serio como acento, franja superior de color por tipo de tarjeta, esquinas medias. El tono más "banco tradicional".</p>
+    </div>
+    <div class="legend">
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#f2f4f7"></div><span>#f2f4f7</span></div>
+        <div class="swatch"><div class="chip" style="background:#dbe2ea"></div><span>#dbe2ea</span></div>
+        <div class="swatch"><div class="chip" style="background:#5c6b7a"></div><span>#5c6b7a</span></div>
+        <div class="swatch"><div class="chip" style="background:#2350c9"></div><span>#2350c9</span></div>
+        <div class="swatch"><div class="chip" style="background:#0f8a5f"></div><span>#0f8a5f</span></div>
+      </div>
+      <div class="specimen"><span class="label">Cifras</span><div class="line" style="font-family:ui-monospace,monospace;">$145.000</div></div>
+    </div>
+    <div class="phone-shell"><div class="phone" data-variant="azul"><div class="screen">
+      <div class="notch"></div>
+      <div class="app-header"><span class="app-brand">Portal Financiero</span><div class="app-tabs"><span class="active">Historial</span><span>Pagar</span></div><div class="burger"><i></i><i></i><i></i></div></div>
+      <div class="app-body">
+        <div class="kpis">
+          <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+          <div class="kpi"><div class="l">Deuda proy. 12m</div><div class="v">$3,1 M</div></div>
+          <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+          <div class="kpi util"><div class="l">Próx. vencimiento</div><div class="v">5 días</div></div>
+        </div>
+        <div class="panel"><div class="ph">Avance por línea</div>
+          <div class="bar-row"><span class="bl">Hip. BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+          <div class="bar-row"><span class="bl">Consumo Itaú</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bp">40%</span></div>
+          <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+        </div>
+        <table class="mocktable"><thead><tr><th>Ítem</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+          <tr><td class="cat"><span class="item-name">Gastos comunes</span><br><span class="item-sub">Depto 206 · 15 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+          <tr><td class="cat"><span class="item-name">Luz · Enel</span><br><span class="item-sub">18 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$38.200</td></tr>
+          <tr><td class="cat"><span class="item-name">Agua · Aguas Andinas</span><br><span class="item-sub">20 jul</span></td><td><span class="pill pending">Pendiente</span></td><td class="amt">$22.900</td></tr>
+          <tr><td class="cat"><span class="item-name">Itaú · Tarjeta</span><br><span class="item-sub">25 jul</span></td><td><span class="pill pending">Pendiente</span></td><td class="amt">$58.700</td></tr>
+        </tbody></table>
+      </div>
+    </div></div></div>
+  </section>
+
+  <!-- VARIANT 2 -->
+  <section id="indigo" class="direction">
+    <div class="dir-head">
+      <p class="eyebrow">Variante 2</p>
+      <h2>Índigo denso</h2>
+      <p>Violeta-índigo en vez de azul, esquinas más rectas, filas más compactas, etiquetas en monoespaciada tipo terminal. Para quien prefiere ver más información sin scrollear.</p>
+    </div>
+    <div class="legend">
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#eef0f5"></div><span>#eef0f5</span></div>
+        <div class="swatch"><div class="chip" style="background:#cfd4e4"></div><span>#cfd4e4</span></div>
+        <div class="swatch"><div class="chip" style="background:#585f78"></div><span>#585f78</span></div>
+        <div class="swatch"><div class="chip" style="background:#4338ca"></div><span>#4338ca</span></div>
+        <div class="swatch"><div class="chip" style="background:#0f8a5f"></div><span>#0f8a5f</span></div>
+      </div>
+      <div class="specimen"><span class="label">Etiquetas</span><div class="line" style="font-family:ui-monospace,monospace; text-transform:uppercase; font-size:0.85rem;">PAGO ESTE MES</div></div>
+    </div>
+    <div class="phone-shell"><div class="phone" data-variant="indigo"><div class="screen">
+      <div class="notch"></div>
+      <div class="app-header"><span class="app-brand">Portal Financiero</span><div class="app-tabs"><span class="active">Historial</span><span>Pagar</span></div><div class="burger"><i></i><i></i><i></i></div></div>
+      <div class="app-body">
+        <div class="kpis">
+          <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+          <div class="kpi"><div class="l">Deuda proy. 12m</div><div class="v">$3,1 M</div></div>
+          <div class="kpi"><div class="l">Líneas activas</div><div class="v">4</div></div>
+          <div class="kpi"><div class="l">Próx. vencimiento</div><div class="v">5 días</div></div>
+        </div>
+        <div class="panel"><div class="ph">Avance por línea</div>
+          <div class="bar-row"><span class="bl">Hip. BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+          <div class="bar-row"><span class="bl">Consumo Itaú</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bp">40%</span></div>
+          <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+        </div>
+        <table class="mocktable"><thead><tr><th>Ítem</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+          <tr><td class="cat"><span class="item-name">Gastos comunes</span><br><span class="item-sub">Depto 206 · 15 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+          <tr><td class="cat"><span class="item-name">Luz · Enel</span><br><span class="item-sub">18 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$38.200</td></tr>
+          <tr><td class="cat"><span class="item-name">Agua · Aguas Andinas</span><br><span class="item-sub">20 jul</span></td><td><span class="pill pending">Pendiente</span></td><td class="amt">$22.900</td></tr>
+          <tr><td class="cat"><span class="item-name">Itaú · Tarjeta</span><br><span class="item-sub">25 jul</span></td><td><span class="pill pending">Pendiente</span></td><td class="amt">$58.700</td></tr>
+        </tbody></table>
+      </div>
+    </div></div></div>
+  </section>
+
+  <!-- VARIANT 3 -->
+  <section id="verde" class="direction">
+    <div class="dir-head">
+      <p class="eyebrow">Variante 3</p>
+      <h2>Verde suave</h2>
+      <p>Verde-teal en vez de azul, esquinas bien redondeadas, tarjetas con fondo tintado en lugar de borde, sombras suaves. El tono más "app de banco moderna", menos corporativo.</p>
+    </div>
+    <div class="legend">
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#f3f7f5"></div><span>#f3f7f5</span></div>
+        <div class="swatch"><div class="chip" style="background:#d7e6df"></div><span>#d7e6df</span></div>
+        <div class="swatch"><div class="chip" style="background:#5a7069"></div><span>#5a7069</span></div>
+        <div class="swatch"><div class="chip" style="background:#0d9488"></div><span>#0d9488</span></div>
+        <div class="swatch"><div class="chip" style="background:#d9534f"></div><span>#d9534f</span></div>
+      </div>
+      <div class="specimen"><span class="label">Cifras</span><div class="line" style="font-family:ui-monospace,monospace;">$145.000</div></div>
+    </div>
+    <div class="phone-shell"><div class="phone" data-variant="verde"><div class="screen">
+      <div class="notch"></div>
+      <div class="app-header"><span class="app-brand">Portal Financiero</span><div class="app-tabs"><span class="active">Historial</span><span>Pagar</span></div><div class="burger"><i></i><i></i><i></i></div></div>
+      <div class="app-body">
+        <div class="kpis">
+          <div class="kpi primary"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+          <div class="kpi"><div class="l">Deuda proy. 12m</div><div class="v">$3,1 M</div></div>
+          <div class="kpi util"><div class="l">Líneas activas</div><div class="v">4</div></div>
+          <div class="kpi util"><div class="l">Próx. vencimiento</div><div class="v">5 días</div></div>
+        </div>
+        <div class="panel"><div class="ph">Avance por línea</div>
+          <div class="bar-row"><span class="bl">Hip. BCI</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span class="bp">62%</span></div>
+          <div class="bar-row"><span class="bl">Consumo Itaú</span><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><span class="bp">40%</span></div>
+          <div class="bar-row"><span class="bl">Tarjeta Itaú</span><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><span class="bp">15%</span></div>
+        </div>
+        <table class="mocktable"><thead><tr><th>Ítem</th><th></th><th style="text-align:right">Monto</th></tr></thead><tbody>
+          <tr><td class="cat"><span class="item-name">Gastos comunes</span><br><span class="item-sub">Depto 206 · 15 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$145.000</td></tr>
+          <tr><td class="cat"><span class="item-name">Luz · Enel</span><br><span class="item-sub">18 jul</span></td><td><span class="pill ok">Pagado</span></td><td class="amt">$38.200</td></tr>
+          <tr><td class="cat"><span class="item-name">Agua · Aguas Andinas</span><br><span class="item-sub">20 jul</span></td><td><span class="pill pending">Pendiente</span></td><td class="amt">$22.900</td></tr>
+          <tr><td class="cat"><span class="item-name">Itaú · Tarjeta</span><br><span class="item-sub">25 jul</span></td><td><span class="pill pending">Pendiente</span></td><td class="amt">$58.700</td></tr>
+        </tbody></table>
+      </div>
+    </div></div></div>
+  </section>
+
+  <footer>¿Alguna te convence, o querés mezclar (por ejemplo el color de la 3 con la densidad de la 2)? Con eso lo llevo al código real.</footer>
+</div>
