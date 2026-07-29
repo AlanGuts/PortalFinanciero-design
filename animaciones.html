@@ -1,0 +1,301 @@
+<title>Animaciones — Azul institucional / Azul profundo</title>
+<style>
+  :root {
+    --bg:#0d1526; --surface:#121d34; --surface-raised:#17253f; --border:#233451;
+    --text:#e7edf9; --text-muted:#8fa0bd; --accent:#6ea8ff; --accent-hover:#8fbcff;
+    --success:#3ddc97; --danger:#ff8574;
+    --font-body:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono: ui-monospace,"IBM Plex Mono","SF Mono",Consolas,monospace;
+    --ease: cubic-bezier(0.16,1,0.3,1);
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5; }
+  .wrap { max-width:820px; margin:0 auto; padding:2.25rem 1.25rem 4rem; }
+
+  .intro .tag { display:inline-block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.14em; color:var(--accent); margin-bottom:0.7rem; }
+  .intro h1 { font-size:clamp(1.4rem,4vw,1.9rem); margin:0 0 0.7rem; letter-spacing:-0.01em; text-wrap:balance; }
+  .intro p { color:var(--text-muted); max-width:66ch; margin:0 0 0.5rem; font-size:0.93rem; }
+  .intro .note { font-size:0.78rem; color:var(--text-muted); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.8rem; margin-top:0.9rem; }
+  .back { display:inline-block; margin-top:0.9rem; font-size:0.82rem; color:var(--accent); text-decoration:none; border-bottom:1px solid currentColor; }
+
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.8rem; }
+  @media (max-width:660px) { .grid { grid-template-columns:1fr; } }
+
+  .demo { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.1rem 1.15rem 1.2rem; display:flex; flex-direction:column; }
+  .demo .num { font-family:var(--font-mono); font-size:0.68rem; color:var(--accent); margin-bottom:0.3rem; }
+  .demo h3 { margin:0 0 0.3rem; font-size:1rem; }
+  .demo p.why { font-size:0.8rem; color:var(--text-muted); margin:0 0 0.9rem; min-height:2.6em; }
+  .stage { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:0.9rem; flex:1; display:flex; flex-direction:column; justify-content:center; min-height:120px; }
+  .replay { align-self:flex-start; margin-top:0.85rem; font-size:0.72rem; background:transparent; color:var(--accent); border:1px solid var(--border); border-radius:999px; padding:0.35rem 0.8rem; cursor:pointer; transition:border-color .15s ease, color .15s ease; }
+  .replay:hover, .replay:focus-visible { border-color:var(--accent); color:var(--accent-hover); }
+
+  /* ---- 1. stagger reveal ---- */
+  @keyframes reveal-up { from { opacity:0; transform:translateY(8px); } }
+  .s-kpis { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
+  .s-item { background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:0.5rem 0.6rem; opacity:1; }
+  .s-item .l { font-size:0.56rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); }
+  .s-item .v { font-family:var(--font-mono); font-size:0.85rem; font-weight:700; }
+  #stagger-stage.play .s-item { animation:reveal-up .5s var(--ease) backwards; animation-delay:var(--d); }
+
+  /* ---- 2. count-up ---- */
+  .count-big { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:2.1rem; font-weight:700; color:var(--accent); text-align:center; }
+  .count-label { text-align:center; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-top:0.3rem; }
+
+  /* ---- 3. bars ---- */
+  .b-row { display:flex; align-items:center; gap:0.5rem; font-size:0.68rem; margin-bottom:0.5rem; }
+  .b-row:last-child { margin-bottom:0; }
+  .b-row .bl { width:96px; flex-shrink:0; color:var(--text-muted); }
+  .b-track { flex:1; height:7px; border-radius:999px; background:var(--surface-raised); overflow:hidden; }
+  .b-fill { height:100%; border-radius:999px; background:var(--accent); width:0%; transition:width 1s var(--ease); }
+  .b-row .bp { font-family:var(--font-mono); width:30px; text-align:right; color:var(--text-muted); }
+
+  /* ---- 4. payment confirm ---- */
+  .pay-row { display:flex; align-items:center; justify-content:space-between; gap:0.7rem; background:var(--surface-raised); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.7rem; }
+  .pay-row .item-name { font-size:0.78rem; font-weight:600; }
+  .pay-row .item-sub { font-size:0.62rem; color:var(--text-muted); }
+  .pill { display:inline-flex; align-items:center; gap:0.3rem; font-size:0.62rem; padding:0.2rem 0.55rem; border-radius:999px; text-transform:uppercase; letter-spacing:0.03em; font-weight:600; transition:background-color .25s ease, color .25s ease; }
+  .pill.pending { background:color-mix(in srgb, var(--danger) 16%, transparent); color:var(--danger); }
+  .pill.ok { background:color-mix(in srgb, var(--success) 18%, transparent); color:var(--success); }
+  @keyframes pop { 0% { transform:scale(1); } 40% { transform:scale(1.18); } 100% { transform:scale(1); } }
+  .pill.pop { animation:pop .38s var(--ease); }
+  .pill svg { width:9px; height:9px; }
+  .pill svg path { stroke-dasharray:14; stroke-dashoffset:14; transition:stroke-dashoffset .3s ease .1s; }
+  .pill.ok svg path { stroke-dashoffset:0; }
+  .pay-btn { font-size:0.68rem; background:var(--accent); color:#0a1220; font-weight:600; border:none; border-radius:6px; padding:0.4rem 0.7rem; cursor:pointer; transition:background-color .15s ease, transform .1s ease; }
+  .pay-btn:hover { background:var(--accent-hover); }
+  .pay-btn:active { transform:translateY(1px); }
+  .pay-btn:disabled { opacity:0.4; cursor:default; }
+
+  /* ---- 5. menu ---- */
+  .mini-app { border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--bg); }
+  .mini-header { display:flex; align-items:center; justify-content:space-between; padding:0.55rem 0.7rem; border-bottom:1px solid var(--border); position:relative; }
+  .mini-brand { font-size:0.68rem; font-weight:700; }
+  .mini-burger { width:20px; height:14px; position:relative; background:none; border:none; cursor:pointer; padding:0; }
+  .mini-burger i { position:absolute; left:0; right:0; height:2px; background:var(--text-muted); border-radius:2px; transition:transform .25s var(--ease), opacity .2s ease; }
+  .mini-burger i:nth-child(1){top:0;} .mini-burger i:nth-child(2){top:6px;} .mini-burger i:nth-child(3){top:12px;}
+  .mini-burger.open i:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  .mini-burger.open i:nth-child(2){ opacity:0; }
+  .mini-burger.open i:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+  .mini-panel { max-height:0; opacity:0; overflow:hidden; transition:max-height .32s var(--ease), opacity .22s ease; }
+  .mini-panel.open { max-height:180px; opacity:1; }
+  .mini-panel ul { list-style:none; margin:0; padding:0.4rem 0.7rem 0.7rem; display:flex; flex-direction:column; gap:0.15rem; }
+  .mini-panel li { font-size:0.72rem; padding:0.4rem 0.3rem; border-radius:6px; color:var(--text-muted); opacity:0; transform:translateX(-6px); transition:opacity .25s ease, transform .25s ease; }
+  .mini-panel.open li { opacity:1; transform:translateX(0); }
+  .mini-panel.open li:nth-child(1){ transition-delay:.05s; }
+  .mini-panel.open li:nth-child(2){ transition-delay:.1s; }
+  .mini-panel.open li:nth-child(3){ transition-delay:.15s; }
+  .mini-panel.open li:nth-child(4){ transition-delay:.2s; }
+  .mini-panel li.active { color:var(--accent); }
+
+  /* ---- 6. hover lift ---- */
+  .hover-card { background:var(--surface-raised); border:1px solid var(--border); border-radius:10px; padding:0.9rem; cursor:default; transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s ease; }
+  .hover-card:hover, .hover-card.simulate { transform:translateY(-4px); box-shadow:0 14px 26px -14px rgba(0,0,0,0.5); border-color:var(--accent); }
+  .hover-card .l { font-size:0.62rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); }
+  .hover-card .v { font-family:var(--font-mono); font-size:1.05rem; font-weight:700; margin-top:0.2rem; }
+  .hint { font-size:0.68rem; color:var(--text-muted); margin-top:0.6rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #stagger-stage.play .s-item { animation-duration:0.001ms !important; }
+    .b-fill { transition-duration:0.001ms !important; }
+    .pill.pop { animation-duration:0.001ms !important; }
+    .mini-panel, .mini-panel li, .mini-burger i, .hover-card { transition-duration:0.001ms !important; }
+  }
+
+  footer { margin-top:2.2rem; padding-top:1.4rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85rem; max-width:62ch; }
+</style>
+
+<div class="wrap">
+  <div class="intro">
+    <p class="tag">Azul institucional · Azul profundo</p>
+    <h1>Seis movimientos, no una lista de efectos</h1>
+    <p>
+      Tres ya existen en el portal en alguna forma (entrada escalonada, cifras que cuentan, barras de avance) —
+      acá los afino. Y sumo dos nuevos: confirmar un pago y abrir el menú. Ninguno es decorativo:
+      cada uno confirma un cambio de estado o guía el ojo a lo que apareció. Todo respeta "reducir movimiento" del sistema.
+    </p>
+    <a class="back" href="azul-institucional.html">← Volver a Azul institucional</a>
+  </div>
+
+  <div class="grid">
+
+    <!-- 1 -->
+    <div class="demo">
+      <span class="num">01 · ya existe, afinado</span>
+      <h3>Entrada escalonada</h3>
+      <p class="why">Al cargar la pantalla, cada tarjeta aparece un poco después que la anterior — el ojo sabe por dónde arrancar a leer.</p>
+      <div class="stage">
+        <div class="s-kpis play" id="stagger-stage">
+          <div class="s-item" style="--d:0ms"><div class="l">Pago este mes</div><div class="v">$284.500</div></div>
+          <div class="s-item" style="--d:80ms"><div class="l">Deuda 12m</div><div class="v">$3,1 M</div></div>
+          <div class="s-item" style="--d:160ms"><div class="l">Líneas</div><div class="v">4</div></div>
+          <div class="s-item" style="--d:240ms"><div class="l">Vence en</div><div class="v">5 días</div></div>
+        </div>
+      </div>
+      <button class="replay" onclick="replayStagger()">▶ Repetir</button>
+    </div>
+
+    <!-- 2 -->
+    <div class="demo">
+      <span class="num">02 · ya existe, afinado</span>
+      <h3>Cifras que cuentan</h3>
+      <p class="why">El número principal no aparece de golpe: sube desde 0 en menos de un segundo. Se siente "calculado en vivo", no impreso.</p>
+      <div class="stage">
+        <div class="count-big" id="count-el">$0</div>
+        <div class="count-label">Pago este mes</div>
+      </div>
+      <button class="replay" onclick="replayCount()">▶ Repetir</button>
+    </div>
+
+    <!-- 3 -->
+    <div class="demo">
+      <span class="num">03 · ya existe, afinado</span>
+      <h3>Barras que crecen</h3>
+      <p class="why">El avance de cada línea de crédito crece desde 0 en vez de estar ya dibujado — comunica "esto es progreso acumulado", no un dato estático.</p>
+      <div class="stage">
+        <div id="bars-stage">
+          <div class="b-row"><span class="bl">Hip. BCI</span><div class="b-track"><div class="b-fill" data-target="62"></div></div><span class="bp">62%</span></div>
+          <div class="b-row"><span class="bl">Consumo Itaú</span><div class="b-track"><div class="b-fill" data-target="40"></div></div><span class="bp">40%</span></div>
+          <div class="b-row"><span class="bl">Tarjeta Itaú</span><div class="b-track"><div class="b-fill" data-target="15"></div></div><span class="bp">15%</span></div>
+        </div>
+      </div>
+      <button class="replay" onclick="replayBars()">▶ Repetir</button>
+    </div>
+
+    <!-- 4 -->
+    <div class="demo">
+      <span class="num">04 · nuevo</span>
+      <h3>Confirmar un pago</h3>
+      <p class="why">Al tocar "Pagar", la etiqueta no solo cambia de texto: hace un pequeño "pop" y dibuja el tilde — se siente una confirmación, no un refresh silencioso.</p>
+      <div class="stage">
+        <div class="pay-row">
+          <div>
+            <div class="item-name">Itaú · Tarjeta</div>
+            <div class="item-sub">25 jul · $58.700</div>
+          </div>
+          <span class="pill pending" id="pay-pill">Pendiente</span>
+          <button class="pay-btn" id="pay-btn" onclick="confirmPay()">Pagar</button>
+        </div>
+      </div>
+      <button class="replay" onclick="resetPay()">↺ Reiniciar</button>
+    </div>
+
+    <!-- 5 -->
+    <div class="demo">
+      <span class="num">05 · nuevo</span>
+      <h3>Menú que se abre</h3>
+      <p class="why">El panel no aparece de golpe: se desliza y los links entran uno por uno. Confirma "esto se abrió", útil justo donde hoy vive el menú hamburguesa real.</p>
+      <div class="stage">
+        <div class="mini-app">
+          <div class="mini-header">
+            <span class="mini-brand">PF</span>
+            <button class="mini-burger" id="mini-burger" onclick="toggleMenu()"><i></i><i></i><i></i></button>
+          </div>
+          <div class="mini-panel" id="mini-panel">
+            <ul>
+              <li class="active">Historial</li>
+              <li>Pagar mes</li>
+              <li>Tarjetas</li>
+              <li>Deuda proyectada</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button class="replay" onclick="toggleMenu()">▶ Abrir / cerrar</button>
+    </div>
+
+    <!-- 6 -->
+    <div class="demo">
+      <span class="num">06 · nuevo</span>
+      <h3>Tarjetas que responden</h3>
+      <p class="why">Al pasar el mouse (o tocar), la tarjeta se levanta un poco y el borde toma el acento — confirma que es interactiva antes de tocarla.</p>
+      <div class="stage">
+        <div class="hover-card" id="hover-card"><div class="l">Deuda proyectada 12m</div><div class="v">$3.100.000</div></div>
+        <p class="hint">En PC: pasá el mouse. En celular, tocá el botón.</p>
+      </div>
+      <button class="replay" onclick="simulateHover()">▶ Simular</button>
+    </div>
+
+  </div>
+
+  <div class="intro">
+    <p class="note" id="rm-note" style="display:none;">
+      Tu sistema tiene "reducir movimiento" activado — acá se ven los mismos cambios, pero instantáneos en vez de animados. Así se comportaría también en el portal real.
+    </p>
+  </div>
+
+  <footer>¿Los sumamos todos, o hay alguno que no va? El menú y el pago son los únicos que tocan comportamiento (no solo estética) — esos dos vale la pena confirmarlos primero.</footer>
+</div>
+
+<script>
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) document.getElementById("rm-note").style.display = "block";
+
+  function replayStagger() {
+    var el = document.getElementById("stagger-stage");
+    el.classList.remove("play");
+    void el.offsetWidth;
+    el.classList.add("play");
+  }
+
+  function replayCount() {
+    var el = document.getElementById("count-el");
+    var target = 284500;
+    if (reduced) { el.textContent = "$" + target.toLocaleString("es-CL"); return; }
+    var start = null;
+    var duration = 900;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(target * eased);
+      el.textContent = "$" + val.toLocaleString("es-CL");
+      if (p < 1) requestAnimationFrame(step);
+    }
+    el.textContent = "$0";
+    requestAnimationFrame(step);
+  }
+
+  function replayBars() {
+    var fills = document.querySelectorAll("#bars-stage .b-fill");
+    fills.forEach(function (f) { f.style.width = "0%"; });
+    void document.getElementById("bars-stage").offsetWidth;
+    fills.forEach(function (f, i) {
+      setTimeout(function () { f.style.width = f.dataset.target + "%"; }, reduced ? 0 : i * 120);
+    });
+  }
+
+  function confirmPay() {
+    var pill = document.getElementById("pay-pill");
+    var btn = document.getElementById("pay-btn");
+    pill.textContent = "";
+    var check = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    check.setAttribute("viewBox", "0 0 12 12");
+    check.innerHTML = '<path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+    pill.appendChild(check);
+    pill.appendChild(document.createTextNode(" Pagado"));
+    pill.classList.remove("pending");
+    pill.classList.add("ok", "pop");
+    btn.disabled = true;
+    setTimeout(function () { pill.classList.remove("pop"); }, 400);
+  }
+
+  function resetPay() {
+    var pill = document.getElementById("pay-pill");
+    var btn = document.getElementById("pay-btn");
+    pill.innerHTML = "Pendiente";
+    pill.classList.remove("ok");
+    pill.classList.add("pending");
+    btn.disabled = false;
+  }
+
+  function toggleMenu() {
+    document.getElementById("mini-panel").classList.toggle("open");
+    document.getElementById("mini-burger").classList.toggle("open");
+  }
+
+  function simulateHover() {
+    var card = document.getElementById("hover-card");
+    card.classList.add("simulate");
+    setTimeout(function () { card.classList.remove("simulate"); }, 1200);
+  }
+</script>
